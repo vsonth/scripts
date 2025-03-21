@@ -1,5 +1,17 @@
 #!/bin/bash
 
+
+# Ensure the directories have correct permissions
+chmod -R 755 /data /backup
+
+# Check if LOCAL_DIR is set and ensure it has correct permissions
+if [ -n "$LOCAL_DIR" ]; then
+    chmod -R 755 "$LOCAL_DIR"
+    echo "LOCAL_DIR is set. Permission adjustment for "$LOCAL_DIR" ."
+else
+    echo "LOCAL_DIR is not set. Skipping permission adjustment for LOCAL_DIR."
+fi
+
 # Retrieve parameters from Docker environment variables
 S3_BUCKET=${S3_BUCKET}
 LOCAL_DIR=${LOCAL_DIR}
@@ -24,9 +36,9 @@ echo "$STATUS" >> "$LOG_FILE"
 echo "--------------------------------------" >> "$LOG_FILE"
 
 # Send email notification via AWS SES
-EMAIL_BODY="Subject: $EMAIL_SUBJECT
+# EMAIL_BODY="Subject: $EMAIL_SUBJECT
 
-$STATUS
+# $STATUS
 
-$(tail -20 $LOG_FILE)"
-aws ses send-email --from "$EMAIL_FROM" --destination "ToAddresses=$EMAIL_TO" --message "Subject={Data='$EMAIL_SUBJECT'},Body={Text={Data='$EMAIL_BODY'}}"
+# $(tail -20 $LOG_FILE)"
+# aws ses send-email --from "$EMAIL_FROM" --destination "ToAddresses=$EMAIL_TO" --message "Subject={Data='$EMAIL_SUBJECT'},Body={Text={Data='$EMAIL_BODY'}}"

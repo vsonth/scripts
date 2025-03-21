@@ -7,7 +7,7 @@ RUN yum install -y aws-cli
 WORKDIR /backup
 
 # Copy the backup script
-COPY backup.sh /backup/backup.sh
-RUN chmod +x /backup/backup.sh
+COPY backup.sh /backup.sh
+RUN chmod +x /backup.sh
 
-ENTRYPOINT ["/backup/backup.sh"]
+ENTRYPOINT ["/backup.sh"]
